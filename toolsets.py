@@ -216,6 +216,12 @@ TOOLSETS = {
         "includes": []
     },
 
+    "stock_data": {
+        "description": "ai2alpha stock market data — search, price, financials, technical indicators",
+        "tools": ["stock_search"],
+        "includes": []
+    },
+
     "context_engine": {
         "description": "Runtime tools exposed by the active context engine",
         "tools": [],
