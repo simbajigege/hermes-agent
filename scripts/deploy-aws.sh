@@ -44,10 +44,10 @@ set -e
 # 1. Clone or pull latest code
 if [ -d "$APP_DIR" ]; then
   echo "Pulling latest code..."
-  cd $APP_DIR && git pull --ff-only
+  cd $APP_DIR && git fetch origin && git checkout ai2alpha && git pull --ff-only origin ai2alpha
 else
   echo "Cloning repo..."
-  cd /app && git clone https://github.com/simbajigege/hermes-agent
+  cd /app && git clone --branch ai2alpha https://github.com/simbajigege/hermes-agent
 fi
 
 cd $APP_DIR
