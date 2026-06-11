@@ -65,13 +65,21 @@ source .venv/bin/activate
 uv pip install -e ".[all]" --quiet
 
 # 3. Write ~/.hermes/.env (API server config)
+# Only set specific keys — preserves any manually added keys (e.g. FIRECRAWL_API_KEY)
 mkdir -p $HERMES_HOME
-cat > $HERMES_HOME/.env << 'EOF'
-API_SERVER_ENABLED=true
-API_SERVER_HOST=127.0.0.1
-API_SERVER_PORT=8642
-API_SERVER_KEY=${API_SERVER_KEY}
-EOF
+touch $HERMES_HOME/.env
+_set_env() {
+  local key=\$1 val=\$2
+  if grep -q "^\${key}=" "$HERMES_HOME/.env" 2>/dev/null; then
+    sed -i "s|^\${key}=.*|\${key}=\${val}|" "$HERMES_HOME/.env"
+  else
+    echo "\${key}=\${val}" >> "$HERMES_HOME/.env"
+  fi
+}
+_set_env API_SERVER_ENABLED true
+_set_env API_SERVER_HOST    127.0.0.1
+_set_env API_SERVER_PORT    8642
+_set_env API_SERVER_KEY     ${API_SERVER_KEY}
 
 # 4. Write ~/.hermes/config.yaml
 # - Uses same Bedrock credentials as local
