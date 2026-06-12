@@ -113,8 +113,11 @@ def stock_search_tool(query: str, stock_type: str = None, limit: int = 10) -> st
 _STOCK_SEARCH_SCHEMA = {
     "name": "stock_search",
     "description": (
-        "按股票代码或公司名称搜索股票，返回匹配的股票列表（代码、名称、市场、行业、当前价格）。"
-        "用于将用户提到的公司名称转换为精确的股票代码，再供其他股票工具使用。"
+        "【股票查询首选工具】当用户提到任何股票、公司名称（如茅台、腾讯、苹果）或股票代码（如600519、00700.HK、AAPL）时，"
+        "必须优先调用此工具，而非使用 web_search。"
+        "此工具直接查询 ai2alpha 股票数据库，返回精确的股票代码、公司名称、所属市场（A股/港股/美股）、行业分类和当前价格。"
+        "适用场景：用户说'搜索XX股票'、'查一下XX'、'XX的股票代码是多少'、'帮我找XX的股票信息'等。"
+        "获得股票代码后，可继续调用 stock_get_price、stock_get_financials 等工具获取详细数据。"
     ),
     "parameters": {
         "type": "object",
