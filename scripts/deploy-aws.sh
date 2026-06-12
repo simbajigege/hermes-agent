@@ -100,6 +100,7 @@ platform_toolsets:
     - memory
     - todo
     - stock_data
+    - delegation
 
 agent:
   max_turns: 30
