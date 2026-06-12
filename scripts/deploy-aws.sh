@@ -97,7 +97,6 @@ platform_toolsets:
   api_server:
     - web
     - vision
-    - memory
     - todo
     - stock_data
     - delegation
