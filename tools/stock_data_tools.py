@@ -111,38 +111,37 @@ def stock_search_tool(query: str, stock_type: str = None, limit: int = 10) -> st
 
 
 _STOCK_SEARCH_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "query": {
-            "type": "string",
-            "description": (
-                "搜索关键词，支持股票代码（如 '600519'、'00700.HK'、'AAPL'）"
-                "或公司名称（如 '贵州茅台'、'腾讯'、'Apple'）"
-            ),
+    "name": "stock_search",
+    "description": (
+        "按股票代码或公司名称搜索股票，返回匹配的股票列表（代码、名称、市场、行业、当前价格）。"
+        "用于将用户提到的公司名称转换为精确的股票代码，再供其他股票工具使用。"
+    ),
+    "parameters": {
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": (
+                    "搜索关键词，支持股票代码（如 '600519'、'00700.HK'、'AAPL'）"
+                    "或公司名称（如 '贵州茅台'、'腾讯'、'Apple'）"
+                ),
+            },
+            "stock_type": {
+                "type": "string",
+                "description": "市场过滤，可选值：A（A股）、HK（港股）、USA（美股）。不传则搜索全市场",
+            },
+            "limit": {
+                "type": "integer",
+                "description": "最多返回多少条结果，默认10，最多50",
+            },
         },
-        "stock_type": {
-            "type": "string",
-            "enum": ["A", "HK", "USA"],
-            "description": "市场过滤：A=A股，HK=港股，USA=美股。不传则搜索全市场",
-        },
-        "limit": {
-            "type": "integer",
-            "description": "最多返回多少条结果，默认10，最多50",
-            "default": 10,
-            "minimum": 1,
-            "maximum": 50,
-        },
+        "required": ["query"],
     },
-    "required": ["query"],
 }
 
 registry.register(
     name="stock_search",
     toolset="stock_data",
-    description=(
-        "按股票代码或公司名称搜索股票，返回匹配的股票列表（代码、名称、市场、行业、当前价格）。"
-        "用于将用户提到的公司名称转换为精确的股票代码，再供其他股票工具使用。"
-    ),
     schema=_STOCK_SEARCH_SCHEMA,
     handler=lambda args, **kw: stock_search_tool(
         query=args.get("query", ""),
