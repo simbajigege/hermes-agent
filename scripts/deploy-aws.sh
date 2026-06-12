@@ -123,15 +123,18 @@ if [ -f "$APP_DIR/gateway.pid" ]; then
   if kill -0 "\$OLD_PID" 2>/dev/null; then
     echo "Stopping existing gateway (PID \$OLD_PID)..."
     kill "\$OLD_PID"
-    sleep 2
+    sleep 5
   fi
   rm -f "$APP_DIR/gateway.pid"
 fi
+# Force-release port 8642 in case any previous process is still holding it.
+fuser -k 8642/tcp 2>/dev/null || true
+sleep 2
 
 # 6. Start hermes gateway in background
 cd $APP_DIR
 source .venv/bin/activate
-nohup hermes gateway > $APP_DIR/gateway.log 2>&1 &
+nohup hermes gateway run --replace > $APP_DIR/gateway.log 2>&1 &
 echo \$! > $APP_DIR/gateway.pid
 echo "Hermes gateway started (PID \$(cat $APP_DIR/gateway.pid))"
 
