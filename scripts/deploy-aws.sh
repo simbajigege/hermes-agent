@@ -27,6 +27,7 @@ if [ ! -f "$LOCAL_ENV" ]; then
 fi
 
 API_SERVER_KEY=$(grep '^API_SERVER_KEY=' "$LOCAL_ENV" | cut -d= -f2-)
+STOCK_DATA_API_KEY=$(grep '^STOCK_DATA_API_KEY=' "$LOCAL_ENV" | cut -d= -f2-)
 BEDROCK_API_KEY=$(grep 'api_key:' "$LOCAL_CONFIG" | head -1 | awk '{print $2}')
 BEDROCK_BASE_URL=$(grep 'base_url:' "$LOCAL_CONFIG" | head -1 | awk '{print $2}')
 BEDROCK_MODEL=$(grep 'default:' "$LOCAL_CONFIG" | head -1 | awk '{print $2}')
@@ -76,10 +77,11 @@ _set_env() {
     echo "\${key}=\${val}" >> "$HERMES_HOME/.env"
   fi
 }
-_set_env API_SERVER_ENABLED true
-_set_env API_SERVER_HOST    127.0.0.1
-_set_env API_SERVER_PORT    8642
-_set_env API_SERVER_KEY     ${API_SERVER_KEY}
+_set_env API_SERVER_ENABLED   true
+_set_env API_SERVER_HOST      127.0.0.1
+_set_env API_SERVER_PORT      8642
+_set_env API_SERVER_KEY       ${API_SERVER_KEY}
+_set_env STOCK_DATA_API_KEY   ${STOCK_DATA_API_KEY}
 
 # 4. Write ~/.hermes/config.yaml
 # - Uses same Bedrock credentials as local
@@ -97,6 +99,7 @@ platform_toolsets:
     - vision
     - memory
     - todo
+    - stock_data
 
 agent:
   max_turns: 30
